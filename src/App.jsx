@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Form } from './components/Form/Form';
-import { MessageList } from './components/MessageList/MessageList';
+import { Form } from './components/Form';
+import { MessageList } from './components/MessageList';
 import style from './App.module.scss';
+import { AUTHOR } from './constants';
 
 export const App = () => {
   const [messageList, setMessageList] = useState([]);
@@ -12,14 +13,14 @@ export const App = () => {
 
   const botAnswer = {
     id: Math.random() * 1000,
-    text: 'Hello',
-    author: 'BOT',
+    text: 'Hello from BOT',
+    author: AUTHOR.bot,
   };
 
   useEffect(() => {
     if (
       messageList.length > 0 &&
-      messageList[messageList.length - 1].author !== 'BOT'
+      messageList[messageList.length - 1].author === AUTHOR.user
     ) {
       const timer = setTimeout(() => {
         addToMessageList(botAnswer);
