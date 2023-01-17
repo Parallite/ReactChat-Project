@@ -1,18 +1,21 @@
-import { useState } from 'react';
-import style from './Form.module.scss';
+import { useState } from "react";
+import { AUTHOR } from "src/constants";
+import style from "./Form.module.scss";
 
 export const Form = ({ addNewMessage }) => {
-  const [messageText, setMessageText] = useState('');
-  const [messageAuthor, setMessageAuthor] = useState('');
+  const [messageText, setMessageText] = useState("");
+  const [messageAuthor, setMessageAuthor] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const message = {
       id: Math.random() * 1000,
       text: messageText,
-      author: messageAuthor,
+      author: AUTHOR.user,
     };
     addNewMessage(message);
+    setMessageText("");
+    setMessageAuthor("");
   };
 
   return (
@@ -24,6 +27,7 @@ export const Form = ({ addNewMessage }) => {
             type="text"
             name="author"
             placeholder="author"
+            value={messageAuthor}
             onChange={(e) => setMessageAuthor(e.target.value)}
           />
           <input
@@ -31,9 +35,15 @@ export const Form = ({ addNewMessage }) => {
             type="text"
             name="message"
             placeholder="message"
+            value={messageText}
             onChange={(e) => setMessageText(e.target.value)}
           />
-          <button className={style.btn}>Send message</button>
+          <button
+            className={style.btn}
+            disabled={!messageText && !messageAuthor}
+          >
+            Send message
+          </button>
         </form>
       </div>
     </>
