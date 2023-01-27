@@ -22,8 +22,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: mshick/add-pr-comment@v1
-        # env:
-        #   MY_TOKEN: ${{ secrets.MY_TOKEN }}
+        env:
+          MY_TOKEN: ${{ secrets.MY_TOKEN }}
         with:
           message: |
             You can check this code in chromatic with the link
