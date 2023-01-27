@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 Tests
 
-![Sanity Check] (https://github.com/Parallitik/ReactChat-Project/actions/workflows/sanity-check.yml/badge.svg)
+![Sanity Check](https://github.com/Parallitik/ReactChat-Project/actions/workflows/sanity-check.yml/badge.svg)
 
 ## Available Scripts
 
