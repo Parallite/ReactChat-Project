@@ -1,28 +1,38 @@
-import { useState } from "react";
-import { AUTHOR } from "src/constants";
-import style from "./Form.module.scss";
+import { FC, useEffect, useRef, useState } from 'react';
+import { AUTHOR, Message } from 'src/types';
+import style from './Form.module.scss';
 
-export const Form = ({ addNewMessage }) => {
-  const [messageText, setMessageText] = useState("");
-  const [messageAuthor, setMessageAuthor] = useState("");
+interface FormProps {
+  addNewMessage: (msg: Message) => void;
+}
 
-  const handleSubmit = (e) => {
+export const Form: FC<FormProps> = ({ addNewMessage }) => {
+  const [messageText, setMessageText] = useState('');
+  const [messageAuthor, setMessageAuthor] = useState('');
+  const inputEl = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const message = {
       id: Math.random() * 1000,
       text: messageText,
-      author: AUTHOR.user,
+      author: AUTHOR.USER,
     };
     addNewMessage(message);
-    setMessageText("");
-    setMessageAuthor("");
+    setMessageText('');
+    setMessageAuthor('');
   };
+
+  useEffect(() => {
+    inputEl.current?.focus();
+  }, [addNewMessage]);
 
   return (
     <>
       <div className={style.wrp}>
         <form className={style.form} onSubmit={handleSubmit}>
           <input
+            ref={inputEl}
             className={style.input}
             type="text"
             name="author"

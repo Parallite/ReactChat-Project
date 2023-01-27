@@ -1,14 +1,14 @@
-import { MessageList } from "./MessageList";
-import { render, screen } from "@testing-library/react";
+import { MessageList } from './MessageList';
+import { render, screen } from '@testing-library/react';
 
-describe("MessageList component", () => {
-  it("render MessageList", () => {
+describe('MessageList component', () => {
+  it('render MessageList', () => {
     render(<MessageList messageList={[]} />);
   });
-  it("render message to MessageList comp", () => {
+  it('render message to MessageList comp', () => {
     const message = {
       id: 1,
-      text: "Hello",
+      text: 'Hello',
       author: 'Maxim',
     };
     render(<MessageList messageList={[message]} />);
