@@ -1,0 +1,53 @@
+.container {
+  width: 1140px;
+  margin: 0 auto;
+}
+
+.contentWrp {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+
+}
+
+.header {
+  background-color: #bce7f0;
+}
+
+.links {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 60px;
+}
+
+.activeLink {
+  text-decoration: none;
+  background-color: #638ce7;
+  color: #f6fff7;
+  border-radius: 15px;
+  margin: 15px 15px;
+  padding: 10px 35px 10px 35px;
+}
+
+.defaultLink {
+  text-decoration: none;
+  background-color: #f6fff7;
+  color: #638ce7;
+  border-radius: 15px;
+  margin: 15px 15px;
+  padding: 10px 35px 10px 35px;
+}
+
+
+// btn #638ce7
+// белый f6fff7
+// .ul {
+//     display: flex;
+//     justify-content: space-around;
+//     align-items: center;
+//     height: 50px;
+
+//     & > li {
+//       list-style-type: none;
+//     }
+//   }
