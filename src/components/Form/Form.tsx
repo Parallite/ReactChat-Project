@@ -1,24 +1,28 @@
 import { FC, useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { AUTHOR, Message } from 'src/types';
 import style from './Form.module.scss';
 
 interface FormProps {
-  addNewMessage: (msg: Message) => void;
+  addNewMessage: (chatId: string, msg: Message) => void;
 }
 
 export const Form: FC<FormProps> = ({ addNewMessage }) => {
   const [messageText, setMessageText] = useState('');
   const [messageAuthor, setMessageAuthor] = useState('');
+  const { chatId } = useParams();
+
   const inputEl = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const message = {
-      id: Math.random() * 1000,
-      text: messageText,
-      author: AUTHOR.USER,
-    };
-    addNewMessage(message);
+    if (chatId) {
+      addNewMessage(chatId, {
+        id: Math.random() * 1000,
+        text: messageText,
+        author: AUTHOR.USER,
+      });
+    }
     setMessageText('');
     setMessageAuthor('');
   };

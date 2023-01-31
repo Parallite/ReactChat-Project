@@ -62,10 +62,10 @@ module.exports = {
           ])
     );
     // add alias this here
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      src: path.resolve(__dirname, "../src/"),
-    };
+    // config.resolve.alias = {
+    //   ...config.resolve.alias,
+    //   src: path.resolve(__dirname, "../src/"),
+    // };
     // alias
     return config;
   },
