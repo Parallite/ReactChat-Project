@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const BundleAnalyzerPlugin =
   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 const isDev = process.env.NODE_ENV === "development";
 const withReport = process.env.npm_config_withReport;
@@ -14,34 +15,24 @@ module.exports = {
       logging: "info",
     },
     compress: true,
+    // for react router
     historyApiFallback: true,
     port: 8000,
-  },
-  entry: path.resolve(__dirname, "./src/index.tsx"),
-  mode: process.env.NODE_ENV === "production" ? "production" : "development",
-  output: {
-    clean: true,
-    environment: {
-      arrowFunction: false,
-    },
-    filename: "[name].bundle.[chunkhash].js",
-    path: path.resolve(__dirname, "./build"),
-  },
-  resolve: {
-    extensions: [".js", ".jsx"],
   },
   devtool:
     process.env.NODE_ENV === "production"
       ? "hidden-source-map"
       : "eval-source-map",
+  entry: path.resolve(__dirname, "./src/index.tsx"),
+  mode: process.env.NODE_ENV === "production" ? "production" : "development",
   module: {
     rules: [
       {
         exclude: /node_modules/,
-        test: /\.jsx?$/,
+        test: /\.(t|j)sx?$/,
         use: ["babel-loader"],
       },
-      { test: /\.tsx?$/, loader: "ts-loader" },
+      // { test: /\.tsx?$/, loader: 'ts-loader' },
       {
         exclude: /\.module\.s?css$/i,
         test: /\.s?css$/i,
@@ -67,7 +58,7 @@ module.exports = {
             loader: "css-loader",
             options: {
               modules: {
-                localIdentName: "[name]__[hash:base64:5]",
+                localIdentName: "[name]___[hash:base64:5]",
                 mode: "local",
               },
             },
@@ -82,15 +73,22 @@ module.exports = {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: "asset/resource",
       },
-      //   статическая страница
-      //   {
-      //     loader: "html-loader",
-      //     test: /\.html$/i,
-      //   },
+      // {
+      //   loader: 'html-loader',
+      //   test: /\.html$/i,
+      // },
     ],
   },
   optimization: {
     minimizer: ["...", new CssMinimizerPlugin()],
+  },
+  output: {
+    clean: true,
+    environment: {
+      arrowFunction: false,
+    },
+    filename: "[name].bundle.[chunkhash].js",
+    path: path.resolve(__dirname, "./build"),
   },
   performance: {
     hints: false,
@@ -110,6 +108,7 @@ module.exports = {
           }),
         ]),
     ...(withReport ? new BundleAnalyzerPlugin() : ""),
+    new ForkTsCheckerWebpackPlugin(),
   ],
   resolve: {
     alias: {
@@ -118,6 +117,6 @@ module.exports = {
       store: path.resolve(__dirname, "src/store"),
       svg: path.resolve(__dirname, "src/assets/svg"),
     },
-    extensions: [".jsx", ".js", ".ts", ".tsx"],
+    extensions: [".jsx", ".js", ".tsx", ".ts"],
   },
 };
