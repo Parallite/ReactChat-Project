@@ -1,63 +1,53 @@
+import { nanoid } from 'nanoid';
 import { FC, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useParams } from 'react-router-dom';
 import { ChatList } from 'src/components/ChatList';
 import { Form } from 'src/components/Form';
 import { MessageList } from 'src/components/MessageList';
-import { AUTHOR, Chat, Message, Messages } from 'src/types';
+import { addMessage } from 'src/store/messages/actions';
+import { selectMessages } from 'src/store/messages/selectors';
+import { AUTHOR } from 'src/types';
 
-interface ChatPageProps {
-  chats: Chat[];
-  onAddChat: (chat: Chat) => void;
-  messageList: Messages;
-  onAddMessage: (chatId: string, msg: Message) => void;
-  onRemoveChat: (chatId: string) => void;
-}
-
-export const ChatPage: FC<ChatPageProps> = ({
-  chats,
-  onAddChat,
-  messageList,
-  onAddMessage,
-  onRemoveChat,
-}) => {
+export const ChatPage: FC = () => {
   const { chatId } = useParams();
+  const messages = useSelector(selectMessages);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (
       chatId &&
-      messageList[chatId]?.length > 0 &&
-      messageList[chatId][messageList[chatId].length - 1].author === AUTHOR.USER
+      messages[chatId]?.length > 0 &&
+      messages[chatId][messages[chatId].length - 1].author === AUTHOR.USER
     ) {
       const timeout = setTimeout(() => {
-        onAddMessage(chatId, {
-          id: Math.random() * 1000,
-          text: 'Hello from BOT',
-          author: AUTHOR.BOT,
-        });
+        dispatch(
+          addMessage(chatId, {
+            id: nanoid(),
+            text: 'Hello from BOT',
+            author: AUTHOR.BOT,
+          })
+        );
       }, 1500);
 
       return () => {
         clearTimeout(timeout);
       };
     }
-  }, [chatId, messageList, onAddMessage]);
+  }, [chatId, messages, dispatch]);
 
-  if (chatId && !messageList[chatId]) {
+  if (chatId && !messages[chatId]) {
     return <Navigate to="/chats" replace />;
   }
 
   return (
     <>
       <div>
-        <ChatList
-          chats={chats}
-          onAddChat={onAddChat}
-          onRemoveChat={onRemoveChat}
-        />
+        <ChatList />
       </div>
       <div>
-        <MessageList messageList={chatId ? messageList[chatId] : []} />
-        <Form addNewMessage={onAddMessage} />
+        <MessageList messageList={chatId ? messages[chatId] : []} />
+        <Form />
       </div>
     </>
   );

@@ -1,34 +1,29 @@
 import { FC, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-// import { nanoid } from 'nanoid';
-import { Chat } from 'src/types';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { addChat, removeChat } from 'src/store/messages/actions';
+import { selectChats } from 'src/store/messages/selectors';
 
 // const nanoid = customAlphabet('1234567890', 10);
 
-interface ChatListProps {
-  chats: Chat[];
-  onAddChat: (chat: Chat) => void;
-  onRemoveChat: (chatId: string) => void;
-}
-
-export const ChatList: FC<ChatListProps> = ({
-  chats,
-  onAddChat,
-  onRemoveChat,
-}) => {
+export const ChatList: FC = () => {
   const [value, setValue] = useState('');
+  const dispatch = useDispatch();
+
+  const chats = useSelector(
+    selectChats,
+    (prev, next) => prev.length === next.length
+  );
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (value) {
-      onAddChat({
-        id: String(Math.random() * 10000),
-        name: value,
-      });
+      dispatch(addChat(value));
       setValue('');
     }
   };
+
   return (
     <>
       <div>
@@ -40,14 +35,14 @@ export const ChatList: FC<ChatListProps> = ({
           {chats.map((chat) => (
             <li key={chat.id}>
               <NavLink
-                to={`/chats/${chat.id}`}
+                to={`/chats/${chat.name}`}
                 style={({ isActive }) => ({
                   color: isActive ? 'green' : 'blue',
                 })}
               >
                 {chat.name}
               </NavLink>
-              <button onClick={() => onRemoveChat(chat.id)}>
+              <button onClick={() => dispatch(removeChat(chat.name))}>
                 Delete cthis chat
               </button>
             </li>
