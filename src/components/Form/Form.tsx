@@ -1,27 +1,30 @@
+import { nanoid } from 'nanoid';
 import { FC, useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { AUTHOR, Message } from 'src/types';
+import { addMessage } from 'src/store/messages/actions';
+import { AUTHOR } from 'src/types';
 import style from './Form.module.scss';
+import { Wrapper } from './styled';
 
-interface FormProps {
-  addNewMessage: (chatId: string, msg: Message) => void;
-}
-
-export const Form: FC<FormProps> = ({ addNewMessage }) => {
+export const Form: FC = () => {
   const [messageText, setMessageText] = useState('');
   const [messageAuthor, setMessageAuthor] = useState('');
   const { chatId } = useParams();
+  const dispatch = useDispatch();
 
   const inputEl = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (chatId) {
-      addNewMessage(chatId, {
-        id: Math.random() * 1000,
-        text: messageText,
-        author: AUTHOR.USER,
-      });
+      dispatch(
+        addMessage(chatId, {
+          id: nanoid(),
+          text: messageText,
+          author: AUTHOR.USER,
+        })
+      );
     }
     setMessageText('');
     setMessageAuthor('');
@@ -29,21 +32,12 @@ export const Form: FC<FormProps> = ({ addNewMessage }) => {
 
   useEffect(() => {
     inputEl.current?.focus();
-  }, [addNewMessage]);
+  }, [addMessage]);
 
   return (
-    <>
+    <Wrapper>
       <div className={style.wrp}>
         <form className={style.form} onSubmit={handleSubmit}>
-          <input
-            ref={inputEl}
-            className={style.input}
-            type="text"
-            name="author"
-            placeholder="author"
-            value={messageAuthor}
-            onChange={(e) => setMessageAuthor(e.target.value)}
-          />
           <input
             className={style.input}
             type="text"
@@ -60,6 +54,6 @@ export const Form: FC<FormProps> = ({ addNewMessage }) => {
           </button>
         </form>
       </div>
-    </>
+    </Wrapper>
   );
 };
