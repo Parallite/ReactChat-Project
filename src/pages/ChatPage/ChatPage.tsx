@@ -5,7 +5,7 @@ import { Navigate, useParams } from 'react-router-dom';
 import { ChatList } from 'src/components/ChatList';
 import { Form } from 'src/components/Form';
 import { MessageList } from 'src/components/MessageList';
-import { addMessage } from 'src/store/messages/actions';
+import { addMessage } from 'src/store/messages/messagesSlice';
 import { selectMessages } from 'src/store/messages/selectors';
 import { AUTHOR } from 'src/types';
 
@@ -22,11 +22,14 @@ export const ChatPage: FC = () => {
     ) {
       const timeout = setTimeout(() => {
         dispatch(
-          addMessage(chatId, {
-            id: nanoid(),
-            text: 'Hello from BOT',
-            author: AUTHOR.BOT,
-          })
+          addMessage([
+            chatId,
+            {
+              id: nanoid(),
+              text: 'Hello from BOT',
+              author: AUTHOR.BOT,
+            },
+          ])
         );
       }, 1500);
 

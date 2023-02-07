@@ -1,4 +1,4 @@
-import { StoreState } from '..';
+import { RootState } from '..';
 
-export const selectVisible = (state: StoreState) => state.profile.visible;
-export const selectName = (state: StoreState) => state.profile.name;
+export const selectVisible = (state: RootState) => state.profile.visible;
+export const selectName = (state: RootState) => state.profile.name;

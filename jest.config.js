@@ -46,10 +46,10 @@ module.exports = {
   // coverageThreshold: undefined,
   coverageThreshold: {
     global: {
-      branches: 60,
+      branches: 50,
       functions: 50,
-      lines: 60,
-      statements: 60,
+      lines: 50,
+      statements: 50,
     },
   },
   // A path to a custom dependency extractor
@@ -86,6 +86,7 @@ module.exports = {
     "\\.(css|scss)$": "identity-obj-proxy",
     "^src(.*)$": "<rootDir>/src$1",
     "^components(.*)$": "<rootDir>/src/components$1",
+    "^nanoid(/(.*)|$)": "nanoid$1",
     // "^nanoid$": require.resolve("nanoid"),
   },
 

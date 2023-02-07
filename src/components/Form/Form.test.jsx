@@ -1,53 +1,61 @@
-// import { Form } from './Form';
-// import { render } from '@testing-library/react';
-// import '@testing-library/jest-dom';
-// // import userEvent from '@testing-library/user-event';
+import { Form } from './Form';
+import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import { Provider } from 'react-redux';
+import { store } from '../../store';
+import { MemoryRouter } from 'react-router-dom';
+// import userEvent from '@testing-library/user-event';
 
-// describe('Form component', () => {
-//   beforeEach(() => {
-//     render(<Form />);
-//   });
-//     it('render Form component', () => {});
-//     it('render input elements', () => {
-//       expect(screen.getAllByRole(/textbox/).length).toBe(2);
-//     });
-//   });
-//   it('render input elements with placeholder author', () => {
-//     expect(screen.getByPlaceholderText(/author/)).toBeInTheDocument();
-//   });
-//   it('render input element with placeholder message', () => {
-//     expect(screen.getByPlaceholderText(/message/)).toBeInTheDocument();
-//   });
-//   it('render button element', () => {
-//     expect(screen.getByText(/Send message/)).toBeInTheDocument();
-//   });
-//   it('button is disabled', () => {
-//     expect(screen.getByText(/Send message/)).toBeDisabled();
-//   });
-//   it('button is not disabled with inputs filled', () => {
-//     const inputAuthor = screen.getByPlaceholderText(/author/);
-//     const inputMessage = screen.getByPlaceholderText(/message/);
+describe('Form component', () => {
+  beforeEach(() => {
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <Form />
+        </MemoryRouter>
+      </Provider>
+    );
+  });
+  it('render input element', () => {
+    expect(screen.getByRole(/textbox/)).toBeInTheDocument();
+  });
+  it('render input element with placeholder', () => {
+    expect(screen.getByPlaceholderText(/message/)).toBeInTheDocument();
+  });
+  it('button is disabled', () => {
+    expect(screen.getByText(/Send/)).toBeDisabled();
+  });
+  it('button is not disabled with input text', async () => {
+    const inputEl = screen.getByPlaceholderText(/message/);
+    fireEvent.change(inputEl, { target: { value: 'Hello Chat APP' } });
+    expect(screen.getByText(/Send/)).not.toBeDisabled();
+  });
+  // it('test clear input after send data', async () => {
+  //     const inputEl = screen.getByPlaceholderText(/message/);
+  //     fireEvent.change(inputEl, { target: { value: 'Hello Chat APP' } });
+  //     await userEvent.click(screen.getByText(/Send/));
+  //     expect(screen.findByText(/Hello Chat APP/)).not.toBeInTheDocument();
+  // });
+});
 
-//     fireEvent.change(inputAuthor, { target: { value: 'Maxim' } });
-//     fireEvent.change(inputMessage, { target: { value: 'Hello World!' } });
+// describe('ChatList component', () => {
+//     it('should render the ChatList component', async () => {
+//         render(
+//             <Provider store={store}>
+//                 <MemoryRouter>
+//                     <Form />
+//                 </MemoryRouter>
+//             </Provider>
+//         );
 
-//     expect(inputAuthor.value).toBe('Maxim');
-//     expect(inputMessage.value).toBe('Hello World!');
-//     expect(screen.getByText(/Send message/)).not.toBeDisabled();
-//   });
-// });
+//         const store = setupStore()
+//         store.dispatch(todoAdded('Buy milk'))
 
-// describe('Form component', () => {
-//   it('test addNewMessage func', async () => {
-//     const addNewMessage = jest.fn();
-//     render(<Form addNewMessage={addNewMessage} />);
+//         const inputEl = screen.getByPlaceholderText(/message/);
+//         fireEvent.change(inputEl, { target: { value: 'Hello Chat APP' } });
+//         await userEvent.click(screen.getByText(/Send/));
+//         expect(dispatch).toHaveBeenCalledTimes(1)
 
-//     const inputAuthor = screen.getByPlaceholderText(/author/);
-//     const inputMessage = screen.getByPlaceholderText(/message/);
-
-//     await fireEvent.change(inputAuthor, { target: { value: 'Maxim' } });
-//     await fireEvent.change(inputMessage, { target: { value: 'Hello World!' } });
-
-//     await userEvent.click(screen.getByText(/Send message/));
-//     expect(addNewMessage).toHaveBeenCalledTimes(1);
-//   });
+//         const { getByText } = renderWithProviders(<Form />, { store })
+//     })
+// })

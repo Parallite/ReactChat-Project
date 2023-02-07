@@ -17,14 +17,14 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           token: ${{ secrets.MY_TOKEN }}
-  chromatic-comment:
-    name: Add chromatic link comment
-    runs-on: ubuntu-latest
-    steps:
-      - uses: mshick/add-pr-comment@v1
-        env:
-          MY_TOKEN: ${{ secrets.MY_TOKEN }}
-        with:
-          message: |
-            You can check this code in chromatic with the link
-            https://www.chromatic.com/builds?appId=${{ secrets.CHROMATIC_PROJECT_ID }}
+  # chromatic-comment:
+  #   name: Add chromatic link comment
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: mshick/add-pr-comment@v1
+  #       env:
+  #         MY_TOKEN: ${{ secrets.MY_TOKEN }}
+  #       with:
+  #         message: |
+  #           You can check this code in chromatic with the link
+  #           https://www.chromatic.com/builds?appId=${{ secrets.CHROMATIC_PROJECT_ID }}

@@ -1,33 +1,24 @@
-.wrp {
-    margin: 50px 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .form {
-    width: 350px;
-    height: 150px;
     display: flex;
-    justify-content: center;
-    flex-direction: column;
-    padding: 15px 15px;
-    background: rgba(11, 67, 71, 0.5);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 16px;
+    justify-content: space-around;
+    // padding: 15px 15px;
+    // background: rgba(11, 67, 71, 0.5);
+    // box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    // border: 1px solid rgba(255, 255, 255, 0.3);
+    // border-radius: 16px;
 }
 
 .input {
-    margin: 0 0 5px 0;
+    // margin: 0 0 5px 0;
+    min-width: 80%;
     padding: 10px 10px;
     border: 1px solid #c1e1e3;
-    border-radius: 5px;
+    border-radius: 15px;
 }
 
 .btn {
-    margin: 20px 20px;
-    width: 50%;
+    // margin: 20px 20px;
+    max-width: 10%;
     align-self: center;
     color: #242b2b;
     padding: 10px 15px;

@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { addChat, removeChat } from 'src/store/messages/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { addChat, removeChat } from 'src/store/messages/messagesSlice';
 import { selectChats } from 'src/store/messages/selectors';
 
 // const nanoid = customAlphabet('1234567890', 10);
@@ -10,14 +10,10 @@ export const ChatList: FC = () => {
   const [value, setValue] = useState('');
   const dispatch = useDispatch();
 
-  const chats = useSelector(
-    selectChats,
-    (prev, next) => prev.length === next.length
-  );
+  const chats = useSelector(selectChats);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (value) {
       dispatch(addChat(value));
       setValue('');
@@ -43,7 +39,7 @@ export const ChatList: FC = () => {
                 {chat.name}
               </NavLink>
               <button onClick={() => dispatch(removeChat(chat.name))}>
-                Delete cthis chat
+                Delete {chat.name} chat
               </button>
             </li>
           ))}

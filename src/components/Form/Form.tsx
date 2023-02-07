@@ -1,17 +1,18 @@
 import { nanoid } from 'nanoid';
 import { FC, useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { addMessage } from 'src/store/messages/actions';
+import { addMessage } from 'src/store/messages/messagesSlice';
+import { selectMessages } from 'src/store/messages/selectors';
 import { AUTHOR } from 'src/types';
 import style from './Form.module.scss';
 import { Wrapper } from './styled';
 
 export const Form: FC = () => {
   const [messageText, setMessageText] = useState('');
-  const [messageAuthor, setMessageAuthor] = useState('');
   const { chatId } = useParams();
   const dispatch = useDispatch();
+  const messages = useSelector(selectMessages);
 
   const inputEl = useRef<HTMLInputElement>(null);
 
@@ -19,26 +20,30 @@ export const Form: FC = () => {
     e.preventDefault();
     if (chatId) {
       dispatch(
-        addMessage(chatId, {
-          id: nanoid(),
-          text: messageText,
-          author: AUTHOR.USER,
-        })
+        addMessage([
+          chatId,
+          {
+            id: nanoid(),
+            text: messageText,
+            author: AUTHOR.USER,
+          },
+        ])
       );
     }
     setMessageText('');
-    setMessageAuthor('');
   };
 
   useEffect(() => {
     inputEl.current?.focus();
-  }, [addMessage]);
+    console.log('render');
+  }, [messages]);
 
   return (
     <Wrapper>
       <div className={style.wrp}>
         <form className={style.form} onSubmit={handleSubmit}>
           <input
+            ref={inputEl}
             className={style.input}
             type="text"
             name="message"
@@ -46,11 +51,8 @@ export const Form: FC = () => {
             value={messageText}
             onChange={(e) => setMessageText(e.target.value)}
           />
-          <button
-            className={style.btn}
-            disabled={!messageText && !messageAuthor}
-          >
-            Send message
+          <button className={style.btn} disabled={!messageText}>
+            Send &rang;
           </button>
         </form>
       </div>

@@ -1,29 +1,32 @@
-// ниже не доделанный Redux Toolkit
+import { createSlice } from '@reduxjs/toolkit';
 
-// import { createSlice } from '@reduxjs/toolkit'
+export interface ProfileState {
+  name: string;
+  visible: boolean;
+}
 
-// export interface ProfileState {
-//     name: string;
-//     visible: boolean;
-// }
+const initialState: ProfileState = {
+  name: 'Max',
+  visible: false,
+};
 
-// const initialState: ProfileState = {
-//     name: 'Max',
-//     visible: true,
-// };
+const profileSlice = createSlice({
+  name: 'profile',
+  initialState,
+  reducers: {
+    toggleProfile(state, action) {
+      if (action.payload) {
+        state.visible = false;
+      } else {
+        state.visible = true;
+      }
+    },
+    changeName(state, action) {
+      state.name = action.payload;
+    },
+  },
+});
 
-// const profileSlice = createSlice({
-//     name: 'profile',
-//     initialState,
-//     reducers: {
-//         toggleProfile(state, action) {
-//             console.log(state, action)
-//             // state.visible = action.payload
-//         },
-//         // changeName(state, action) {}
-//     }
-// })
+export const { toggleProfile, changeName } = profileSlice.actions;
 
-// export const {toggleProfile} = profileSlice.actions;
-
-// export default profileSlice.reducer;
+export default profileSlice.reducer;
