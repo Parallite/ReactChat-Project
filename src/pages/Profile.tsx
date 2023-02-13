@@ -19,9 +19,7 @@ export const Profile: FC = () => {
       <h2>Profile page</h2>
       <p>visible: </p>
       <input type="checkbox" checked={visible} readOnly />
-      <button onClick={() => dispatch(toggleProfile(visible))}>
-        change visible
-      </button>
+      <button onClick={() => dispatch(toggleProfile())}>change visible</button>
       <p>name: {name}</p>
       <p>Change name:</p>
       <input
