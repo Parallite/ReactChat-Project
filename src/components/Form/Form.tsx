@@ -2,16 +2,17 @@ import { nanoid } from 'nanoid';
 import { FC, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { addMessage } from 'src/store/messages/messagesSlice';
+import { addMessageWithReply } from 'src/store/messages/messagesSlice';
 import { selectMessages } from 'src/store/messages/selectors';
 import { AUTHOR } from 'src/types';
 import style from './Form.module.scss';
 import { Wrapper } from './styled';
+import { AppDispatch } from 'src/store';
 
 export const Form: FC = () => {
   const [messageText, setMessageText] = useState('');
   const { chatId } = useParams();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const messages = useSelector(selectMessages);
 
   const inputEl = useRef<HTMLInputElement>(null);
@@ -20,14 +21,10 @@ export const Form: FC = () => {
     e.preventDefault();
     if (chatId) {
       dispatch(
-        addMessage([
-          chatId,
-          {
-            id: nanoid(),
-            text: messageText,
-            author: AUTHOR.USER,
-          },
-        ])
+        addMessageWithReply({
+          chatName: chatId,
+          message: { id: nanoid(), author: AUTHOR.USER, text: messageText },
+        })
       );
     }
     setMessageText('');
@@ -35,7 +32,6 @@ export const Form: FC = () => {
 
   useEffect(() => {
     inputEl.current?.focus();
-    console.log('render');
   }, [messages]);
 
   return (
