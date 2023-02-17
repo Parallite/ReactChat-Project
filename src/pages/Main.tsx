@@ -1,3 +1,10 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
+import { Weather } from 'src/components/Weather';
 
-export const Main: FC = () => <h2>Main page</h2>;
+export const Main: FC = () => {
+  return (
+    <>
+      <Weather />
+    </>
+  );
+};

@@ -15,3 +15,8 @@ export interface Chat {
   id: string;
   name: string;
 }
+
+export interface AddMessage {
+  chatName: string;
+  message: Message;
+}

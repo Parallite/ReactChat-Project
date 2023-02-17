@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { nanoid } from 'nanoid';
-import { AUTHOR, Message, Messages } from 'src/types';
+import { AddMessage, AUTHOR, Messages } from 'src/types';
 
 const initialState: Messages = {
   first: [{ id: nanoid(), author: AUTHOR.USER, text: 'hello chat 1' }],
@@ -56,8 +56,3 @@ export const addMessageWithReply = createAsyncThunk(
 export const { addChat, addMessage, removeChat } = messagesSlice.actions;
 
 export default messagesSlice.reducer;
-
-export interface AddMessage {
-  chatName: string;
-  message: Message;
-}
