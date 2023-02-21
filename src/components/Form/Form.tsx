@@ -8,6 +8,8 @@ import { AUTHOR } from 'src/types';
 import style from './Form.module.scss';
 import { Wrapper } from './styled';
 import { AppDispatch } from 'src/store';
+import { push, ref } from 'firebase/database';
+import { db } from 'src/services/firebase';
 
 export const Form: FC = () => {
   const [messageText, setMessageText] = useState('');
@@ -20,12 +22,14 @@ export const Form: FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (chatId) {
-      dispatch(
-        addMessageWithReply({
-          chatName: chatId,
-          message: { id: nanoid(), author: AUTHOR.USER, text: messageText },
-        })
-      );
+      // dispatch(
+      //   addMessageWithReply({
+      //     chatName: chatId,
+      //     message: { id: nanoid(), author: AUTHOR.USER, text: messageText },
+      //   })
+      // );
+
+      push(ref(db, `messages/${chatId}/messages`), { author: AUTHOR.USER, text: messageText })
     }
     setMessageText('');
   };

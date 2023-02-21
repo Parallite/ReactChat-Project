@@ -6,12 +6,12 @@ interface MessageListProps {
   messageList: Message[];
 }
 
-export const MessageList: FC<MessageListProps> = ({ messageList }) => {
+export const MessageList: FC<any> = ({ messageList }) => {
   return (
     <>
       <ul className={style.chatWrp}>
-        {messageList.map((message) => (
-          <li className={style.chatMessage} key={message.id}>
+        {messageList.map((message:any, idx: number) => (
+          <li className={style.chatMessage} key={idx}>
             <p data-testid="message-test" className={style.chatInfo}>
               author: {message.author}
             </p>

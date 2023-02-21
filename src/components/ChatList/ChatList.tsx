@@ -3,22 +3,33 @@ import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addChat, removeChat } from 'src/store/messages/messagesSlice';
 import { selectChats } from 'src/store/messages/selectors';
+import { push, ref, remove, set } from 'firebase/database';
+import { db } from 'src/services/firebase';
+import { nanoid } from 'nanoid';
 
 // const nanoid = customAlphabet('1234567890', 10);
 
-export const ChatList: FC = () => {
+export const ChatList: FC<any> = ({chats}) => {
   const [value, setValue] = useState('');
-  const dispatch = useDispatch();
-
-  const chats = useSelector(selectChats);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (value) {
-      dispatch(addChat(value));
-      setValue('');
+      set(ref(db, `chats/${value}`), {
+        id: nanoid(),
+        name: value
+      })
+      set(ref(db, `messages/${value}`), {
+        id: nanoid(),
+        name: value
+      })
     }
+    setValue('');
   };
+
+  const handleDelete = (chatName: string) => {
+    remove(ref(db, `chats/${chatName}`))
+  }
 
   return (
     <>
@@ -28,7 +39,7 @@ export const ChatList: FC = () => {
           <button>create chat</button>
         </form>
         <ul>
-          {chats.map((chat) => (
+          {chats.map((chat: any) => (
             <li key={chat.id}>
               <NavLink
                 to={`/chats/${chat.name}`}
@@ -38,7 +49,7 @@ export const ChatList: FC = () => {
               >
                 {chat.name}
               </NavLink>
-              <button onClick={() => dispatch(removeChat(chat.name))}>
+              <button onClick={() => handleDelete(chat.name)}>
                 Delete {chat.name} chat
               </button>
             </li>
